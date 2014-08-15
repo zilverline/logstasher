@@ -5,7 +5,7 @@
 Add the following line to the Gemfile:
 
 ```
-gem 'logstasher', git: 'zilverline/logstasher'
+gem 'logstasher', github: 'zilverline/logstasher'
 ```
 
 Logstasher will now be enabled in all environments except development and test.
