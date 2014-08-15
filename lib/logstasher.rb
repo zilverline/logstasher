@@ -1,5 +1,6 @@
 require 'logstasher/version'
 require 'logstasher/log_subscriber'
+require 'logstasher/logstasher_rails'
 require 'request_store'
 require 'active_support/core_ext/module/attribute_accessors'
 require 'active_support/core_ext/string/inflections'
@@ -89,13 +90,6 @@ module LogStasher
     Thread.current[:logstasher_custom_fields] = val
   end
 
-  def log(severity, msg)
-    if self.logger && self.logger.send("#{severity}?")
-      event = LogStash::Event.new('@source' => self.source, '@fields' => {:message => msg, :level => severity}, '@tags' => ['log'])
-      self.logger.send severity, event.to_json
-    end
-  end
-
   def store
     if RequestStore.store[STORE_KEY].nil?
       # Get each store it's own private Hash instance.
@@ -110,14 +104,6 @@ module LogStasher
       # Calling the processing block with the Notification args and the store
       block.call(*args, store[event_group])
     end
-  end
-
-  %w( fatal error warn info debug unknown ).each do |severity|
-    eval <<-EOM, nil, __FILE__, __LINE__ + 1
-      def #{severity}(msg)
-        self.log(:#{severity}, msg)
-      end
-    EOM
   end
 
   private
