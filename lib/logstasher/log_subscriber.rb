@@ -21,7 +21,7 @@ module LogStasher
       data[:source] = LogStasher.source
 
       event = LogStash::Event.new(data)
-      LogStasher.logger << event.to_json + "\n"
+      LogStasher.logger << LogStasher.scrub(event.to_json + "\n")
     end
 
     def redirect_to(event)

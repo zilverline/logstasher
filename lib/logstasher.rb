@@ -14,6 +14,11 @@ module LogStasher
   # Setting the default to 'unknown' to define the default behaviour
   @source = 'unknown'
 
+  def scrub(value)
+    # scrub invalid UTF-8 characters
+    value.encode("UTF-16", invalid: :replace).encode("UTF-8")
+  end
+
   def remove_existing_log_subscriptions
     ActiveSupport::LogSubscriber.log_subscribers.each do |subscriber|
       case subscriber

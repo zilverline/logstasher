@@ -20,15 +20,10 @@ class LogStasherRails < Logger
     rescue
     end
 
-    "#{scrub(event.to_json)}\n"
+    "#{LogStasher.scrub(event.to_json)}\n"
   end
 
   def <<(msg)
-    super(scrub(msg.to_s))
-  end
-
-  def scrub(value)
-    # scrub invalid UTF-8 characters
-    value.encode("UTF-16", invalid: :replace).encode("UTF-8")
+    super(LogStasher.scrub(msg.to_s))
   end
 end
