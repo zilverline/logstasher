@@ -47,3 +47,16 @@ def data_for_request_log(fields)
   }
 end
 ```
+
+## File uploads
+
+Since all parameters are converted to json before they are written to the log file, it is important that you
+filter all binary parameters from the log.
+
+```
+# in config/initializers/filter_parameter_logging.rb
+
+Rails.application.config.filter_parameters += [:password, :access_token, :attachments]
+```
+
+You'll get a `Encoding::UndefinedConversionError` when you forget to filter binary parameters.
