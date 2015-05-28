@@ -36,15 +36,6 @@ module LogStasher
           fields[:environment] = Rails.env
           fields[:site] = request.path =~ /^\/api/ ? "api" : "web"
 
-          user = case
-                 when defined?(current_user)
-                   current_user
-                 when defined?(current_resource_owner)
-                   current_resource_owner
-                 end
-
-          fields[:current_user] = user.id if user && user.id
-
           begin
             fields.merge!(self.data_for_request_log(fields)) if self.respond_to?(:data_for_request_log)
           rescue StandardError => e
