@@ -23,7 +23,7 @@ module LogStasher
         app_config.logstasher.logger = LogStasherRails.new(app_config.logstasher.logger_path)
         app_config.logger = app_config.logstasher.logger
 
-        app_config.logstasher.source = "#{Rails.application.class.parent_name.downcase}_#{Rails.env}"
+        app_config.logstasher.source = "#{Rails.application.class.module_parent_name.downcase}_#{Rails.env}"
       end
     end
 
